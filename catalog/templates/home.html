@@ -34,22 +34,35 @@
         <div class="content-container">
             <h2 class="section-title">Trending Now</h2>
             <div class="bento-grid">
-                
-                <div class="bento-card">
-                    <div class="card-image" style="background-image: url('https://i0.wp.com/doublesama.com/wp-content/uploads/2021/06/Jujutsu-Kaisen-cover-1.jpg?resize=640%2C907');"></div>
+    
+                {% for show in animes %}
+                <div class="bento-card anime-card">
+                    <div class="card-image" style="background-image: url('{{ show.poster_url }}');"></div>
                     <div class="card-info">
-                        <h3>Jujutsu Kaisen</h3>
-                        <a href="#" class="affiliate-btn">▶ Watch on Crunchyroll</a>
-                    </div>
-                </div>
+                        <h3>{{ show.title }}</h3>
+                        <p style="color: var(--accent-color); font-size: 14px; margin-bottom: 12px; font-weight: 600;">
+                            📅 {{ show.release_date|date:"M d, Y" }}
+                        </p>
 
-                <div class="bento-card">
-                    <div class="card-image" style="background-image: url('https://yenpress.com/uploads/Solo-Leveling-Vol-13.jpg');"></div>
-                    <div class="card-info">
-                        <h3>Solo Leveling</h3>
-                        <a href="#" class="affiliate-btn">▶ Watch on Prime Video</a>
+                        <a href="#" class="affiliate-btn">▶ Watch Now</a>
                     </div>
                 </div>
+                {% endfor %}
+
+                {% for show in movies %}
+                <div class="bento-card movie-card">
+                    <div class="card-image" style="background-image: url('{{ show.poster_url }}');"></div>
+                    <div class="card-info">
+                        <h3>{{ show.title }}</h3>
+
+                        <p style="color: var(--accent-color); font-size: 14px; margin-bottom: 12px; font-weight: 600;">
+                            📅 {{ show.release_date|date:"M d, Y" }}
+                        </p>
+
+                        <a href="#" class="affiliate-btn">▶ Watch Now</a>
+                    </div>
+                </div>
+                {% endfor %}
 
             </div>
         </div>

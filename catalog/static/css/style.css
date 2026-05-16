@@ -397,3 +397,11 @@ body {
         padding: 0 10px 60px 10px;
     }
 }
+
+/* Toggled Mode:  */
+
+.movie-card { display: none; }
+.anime-card { display: block; }
+
+body.movie-mode .movie-card { display: block; }
+body.movie-mode .anime-card { display: none; }
