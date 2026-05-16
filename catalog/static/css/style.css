@@ -405,3 +405,44 @@ body {
 
 body.movie-mode .movie-card { display: block; }
 body.movie-mode .anime-card { display: none; }
+
+/* ========================================= */
+/* AUTO-SUGGEST DROPDOWN                     */
+/* ========================================= */
+
+.suggestions-box {
+    position: absolute;
+    top: 100%;
+    left: 20px; 
+    width: 65%; 
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 20px 20px;
+    margin-top: 2px;
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.suggestion-item {
+    padding: 15px 30px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background: var(--accent-color);
+    color: #000;
+    font-weight: 800;
+}
+
+/* Mobile Screens Adjustments */
+@media (max-width: 768px) { .suggestions-box { width: 60%; } }
+@media (max-width: 480px) { .suggestions-box { width: calc(100% - 40px); left: 20px; border-radius: 20px; margin-top: 5px;} }

@@ -1,12 +1,20 @@
 import requests
 from django.shortcuts import render, HttpResponse
 from .models import Show
+from django.http import JsonResponse
 
 TMDB_API_KEY = 'b70551e28f4fd7d27b9d3592e5a79e30'
 
 def home_page(request):
-    movies = Show.objects.filter(show_type='MOVIE').order_by('-rating')[:12]
-    animes = Show.objects.filter(show_type='ANIME').order_by('-rating')[:12]
+
+    query = request.GET.get('q')
+    
+    if query:
+        movies = Show.objects.filter(show_type='MOVIE', title__icontains=query).order_by('-rating')
+        animes = Show.objects.filter(show_type='ANIME', title__icontains=query).order_by('-rating')
+    else:
+        movies = Show.objects.filter(show_type='MOVIE').order_by('-rating')[:12]
+        animes = Show.objects.filter(show_type='ANIME').order_by('-rating')[:12]
     
     context = {
         'movies': movies,
@@ -50,3 +58,12 @@ def fetch_trending_data(request):
                     release_date=item.get('first_air_date') or None
                 )
     return HttpResponse("Masla Hal! Purana data delete ho gaya aur Fresh Movies/Anime save ho gaye hain!")
+
+
+def search_suggestions(request):
+    query = request.GET.get('q','')
+    if query :
+        shows = Show.objects.filter(title__icontains=query).values_list('title',flat=True)[:5]
+        return JsonResponse({'suggestions' : list(shows)})
+    return JsonResponse({'suggestions':[]})
+

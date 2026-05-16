@@ -26,10 +26,15 @@
             </div>
         </div>
 
-        <div class="search-container">
-            <input type="text" id="search-input" class="modern-search" placeholder="Search for Anime...">
-            <button class="search-btn" id="search-btn">Search</button>
-        </div>
+        <form class="search-container" method="GET" action="{% url 'home_page' %}" style="position: relative;">
+            
+            <input type="text" name="q" id="search-input" class="modern-search" placeholder="Search for Anime..." autocomplete="off">
+            
+            <button type="submit" class="search-btn" id="search-btn">Search</button>
+
+            <div id="suggestions-box" class="suggestions-box" style="display: none;"></div>
+
+        </form>
 
         <div class="content-container">
             <h2 class="section-title">Trending Now</h2>
@@ -66,6 +71,71 @@
 
             </div>
         </div>
+
+
+        
+        <script>
+            // Ye line confirm karti hai ke website poori load hone ke baad hi JS chale
+            document.addEventListener('DOMContentLoaded', function() {
+                const liveSearchInput = document.getElementById('search-input');
+                const suggestionsBox = document.getElementById('suggestions-box');
+
+                // Check karte hain ke dono cheezein HTML mein mojood hain ya nahi
+                if (!liveSearchInput || !suggestionsBox) {
+                    console.log("🚨 ERROR: Ya toh input id='search-input' missing hai, ya id='suggestions-box' missing hai!");
+                    return;
+                }
+
+                liveSearchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+                    console.log("👀 Aap ne type kiya: ", query); // Aapko console mein likha hua nazar aayega
+
+                    if (query.length > 1) {
+                        fetch(`/search-suggestions/?q=${query}`)
+                        .then(response => {
+                            console.log("📡 Server Status: ", response.status); // Pata chalega server ne kya jawab diya
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("📦 Data received: ", data); // Pata chalega movie mili ya nahi
+                            suggestionsBox.innerHTML = ''; 
+                            
+                            if (data.suggestions && data.suggestions.length > 0) {
+                                suggestionsBox.style.display = 'block';
+                                data.suggestions.forEach(title => {
+                                    const div = document.createElement('div');
+                                    div.classList.add('suggestion-item');
+                                    div.innerText = title;
+                                    
+                                    div.addEventListener('click', function() {
+                                        liveSearchInput.value = title; 
+                                        suggestionsBox.style.display = 'none'; 
+                                        liveSearchInput.closest('form').submit(); 
+                                    });
+                                    
+                                    suggestionsBox.appendChild(div);
+                                });
+                            } else {
+                                suggestionsBox.style.display = 'none'; 
+                            }
+                        })
+                        .catch(error => console.log("❌ Fetch Error: ", error)); // Agar JS crash hui toh ye batayega
+                    } else {
+                        suggestionsBox.style.display = 'none';
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!liveSearchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                        suggestionsBox.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+
+
+
     {% endblock %}
 
 
