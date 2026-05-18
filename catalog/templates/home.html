@@ -49,7 +49,7 @@
                             📅 {{ show.release_date|date:"M d, Y" }}
                         </p>
 
-                        <a href="#" class="affiliate-btn">▶ Watch Now</a>
+                        <a href="{% url 'show_detail' show.id %}" class="affiliate-btn">ℹ️ View Details</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -64,11 +64,16 @@
                             📅 {{ show.release_date|date:"M d, Y" }}
                         </p>
 
-                        <a href="#" class="affiliate-btn">▶ Watch Now</a>
+                        <a href="{% url 'show_detail' show.id %}" class="affiliate-btn">ℹ️ View Details</a>
                     </div>
                 </div>
                 {% endfor %}
 
+            </div>
+            </div> <div class="load-more-container" style="text-align: center; margin: 40px 0;">
+                <button id="load-more-btn" class="glow-btn" style="background: transparent; border: 2px solid var(--accent-color); color: #fff; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);">
+                    ⬇ LOAD MORE
+                </button>
             </div>
         </div>
 
@@ -131,6 +136,50 @@
                     }
                 });
             });
+            // ... aapka purana live search wala code yahan upar hai ...
+
+            // 🔥 NAYA: Load More Logic
+                let currentCards = 8; // Shuru mein 8 cards dikhayenge
+                const movieCards = document.querySelectorAll('.movie-card');
+                const animeCards = document.querySelectorAll('.anime-card');
+                const loadMoreBtn = document.getElementById('load-more-btn');
+
+                // Cards ko hide karne ka function
+                function hideExtraCards() {
+                    // Movies hide karo
+                    movieCards.forEach((card, index) => {
+                        if(index >= currentCards) { card.style.display = 'none'; }
+                    });
+                    // Anime hide karo
+                    animeCards.forEach((card, index) => {
+                        if(index >= currentCards) { card.style.display = 'none'; }
+                    });
+                }
+
+                // Page load hotay hi extra cards chupa do
+                hideExtraCards();
+
+                // Jab button click ho toh mazeed 8 cards dikhao
+                if(loadMoreBtn) {
+                    loadMoreBtn.addEventListener('click', function() {
+                        currentCards += 8; // Limit barha do
+                        
+                        // Check karo abhi user Movies dekh raha hai ya Anime
+                        const isMovieMode = document.body.classList.contains('movie-mode');
+                        const targetCards = isMovieMode ? movieCards : animeCards;
+
+                        targetCards.forEach((card, index) => {
+                            if(index < currentCards) {
+                                card.style.display = 'block';
+                            }
+                        });
+
+                        // Agar saare cards dikh gaye toh button gayab kardo
+                        if(currentCards >= targetCards.length) {
+                            loadMoreBtn.style.display = 'none';
+                        }
+                    });
+                }
         </script>
 
 

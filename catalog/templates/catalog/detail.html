@@ -1,0 +1,101 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="detail-bg" style="background-image: url('{{ show.poster_url }}');"></div>
+
+<div class="detail-container">
+    <div class="detail-content glass-panel">
+        <div class="detail-poster">
+            <img src="{{ show.poster_url }}" alt="{{ show.title }}">
+        </div>
+
+        <div class="detail-info">
+            <h1 class="neon-text">{{ show.title }}</h1>
+            
+            <div class="meta-data">
+                <span class="badge quality-badge">4K HDR</span>
+                <span class="badge rating-badge">⭐ {{ show.rating }} / 10</span>
+                {% if show.release_date %}
+                <span class="badge date-badge">📅 {{ show.release_date|date:"M d, Y" }}</span>
+                {% endif %}
+            </div>
+
+            <p class="story-text">
+                {% if show.description %}
+                    {{ show.description }}
+                {% else %}
+                    No description available for this title.
+                {% endif %}
+            </p>
+
+            <div class="action-buttons">
+                <a href="{% if show.affiliate_link %}{{ show.affiliate_link }}{% else %}#{% endif %}" target="_blank" class="glow-btn main-btn">
+                    ▶ WATCH FULL MOVIE
+                </a>
+                <a href="#" class="glow-btn sec-btn">
+                    🎬 Watch Trailer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* VIP DETAIL PAGE CSS (Aapki style.css mein bhi dal sakte hain, abhi yahin likh diya hai taake jaldi ho) */
+.detail-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-size: cover; background-position: center;
+    filter: blur(30px) brightness(0.3); z-index: -1;
+}
+.detail-container {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 80vh; padding: 40px 20px;
+}
+.glass-panel {
+    display: flex; gap: 40px; background: rgba(15, 15, 20, 0.7);
+    backdrop-filter: blur(20px); border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 20px; padding: 40px; max-width: 1000px; width: 100%;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+.detail-poster img {
+    width: 300px; border-radius: 15px;
+    box-shadow: 0 0 20px var(--accent-color);
+}
+.detail-info { display: flex; flex-direction: column; justify-content: center; }
+.neon-text {
+    font-size: 3rem; color: #fff; text-shadow: 0 0 10px var(--accent-color);
+    margin-bottom: 20px;
+}
+.badge {
+    padding: 8px 15px; border-radius: 8px; font-weight: bold; margin-right: 10px;
+    background: rgba(255,255,255,0.1); display: inline-block; margin-bottom: 20px;
+}
+.quality-badge { border: 1px solid #00ffff; color: #00ffff; }
+.rating-badge { border: 1px solid #ffaa00; color: #ffaa00; }
+.date-badge { border: 1px solid #ff00ff; color: #ff00ff; }
+.story-text {
+    color: #ccc; font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px;
+}
+.glow-btn {
+    padding: 15px 30px; border-radius: 10px; font-weight: bold; text-decoration: none;
+    text-transform: uppercase; transition: 0.3s; display: inline-block; margin-right: 15px;
+}
+.main-btn {
+    background: var(--accent-color); color: #000;
+    box-shadow: 0 0 15px var(--accent-color);
+}
+.main-btn:hover { box-shadow: 0 0 30px var(--accent-color); transform: scale(1.05); }
+.sec-btn {
+    background: transparent; border: 2px solid #fff; color: #fff;
+}
+.sec-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .glass-panel { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+    .detail-poster img { width: 100%; max-width: 300px; }
+    .neon-text { font-size: 2rem; }
+}
+</style>
+{% endblock %}

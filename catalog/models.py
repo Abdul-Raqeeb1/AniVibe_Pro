@@ -18,6 +18,8 @@ class Show(models.Model):
     release_date = models.DateField(blank=True, null=True)
     rating = models.FloatField(default=0.0)
 
+    affiliate_link = models.URLField(max_length=500, blank=True, null=True)
+
     def __str__(self):
         return f"{self.title} {self.show_type}"
 
